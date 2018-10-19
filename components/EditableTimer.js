@@ -1,10 +1,4 @@
 import React from 'react';
-import {
-	StyleSheet,
-	View,
-	ScrollView,
-	Text,
-} from 'react-native';
 
 import TimerForm from './TimerForm';
 import Timer from './Timer';

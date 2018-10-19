@@ -1,3 +1,5 @@
+import uuidv4 from 'uuid/v4';
+
 import React from 'react';
 import {
   StyleSheet,
@@ -10,7 +12,28 @@ import EditableTimer from './components/EditableTimer';
 import ToggleTimerForm from './components/ToggleTimerForm';
 
 export default class App extends React.Component {
+  state = { //e’re leaning on the Babel plugin transform-class-properties to help simplify how we define our initial state.
+    timers: [
+      {
+        title: 'Mow the lawn',
+        project: 'House Chores',
+        id: uuidv4(),
+        elapsed: 5456099,
+        isRunning: true,
+      },
+      {
+        title: 'Bake squash',
+        project: 'Kitchen Chores',
+        id: uuidv4(),
+        elapsed: 1273998,
+        isRunning: false,
+      },
+    ],
+  };
+
   render() {
+    const { timers } = this.state
+
     return (
       <View style={styles.appContainer}>
         <View style={styles.titleContainer}>
@@ -19,21 +42,16 @@ export default class App extends React.Component {
           </Text>
         </View>
         <ScrollView style={styles.timerList}>
-          <ToggleTimerForm isOpen={false} />
-          <EditableTimer
-            id='1'
-            title='Mow the lawn'
-            project='House Chores'
-            elapsed='8986300'
-            isRunning //specify if timer is running
-          />
-          <EditableTimer
-            id='2'
-            title='Bake squash'
-            project='Kitchen chores'
-            elapsed='37758394'
-            editFormOpen
-          />
+          <ToggleTimerForm />
+          {timers.map(({ title, project, id, elapsed, isRunning }) => ( //will call once per item in the array.
+            <EditableTimer
+              key={id}
+              title={title}
+              project={project}
+              elapsed={elapsed}
+              isRunning={isRunning} //specify if timer is running
+            />
+          ))}
         </ScrollView>
       </View>
     );
