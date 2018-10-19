@@ -7,7 +7,7 @@ import {
 	TouchableOpacity
 } from 'react-native';
 
-export default function TimerButton({ color, title, small, onPress }) {
+export default function TimerButton({ color, title, small, onPress }) { //we include these props as params so that our button can have easier customization
 	return (
 		<TouchableOpacity
 			style={[
