@@ -25,7 +25,7 @@ export default class App extends React.Component {
             title='Mow the lawn'
             project='House Chores'
             elapsed='8986300'
-            isRunning
+            isRunning //specify if timer is running
           />
           <EditableTimer
             id='2'
@@ -43,17 +43,19 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   titleContainer: {
-
+    // paddingTop: 35,
+    // paddingBottom: 15,
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#D6D7DA',
   },
   title: {
-
+    // fontSize: 18,
+    // fontWeight: 'bold',
+    // textAlign: 'center',
   },
   timerList: {
-
+    // paddingBottom: 15,
   },
 });
