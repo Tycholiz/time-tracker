@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4';
+import { newTimer } from './utils/timer';
 
 import React from 'react';
 import {
@@ -12,7 +13,7 @@ import EditableTimer from './components/EditableTimer';
 import ToggleTimerForm from './components/ToggleTimerForm';
 
 export default class App extends React.Component {
-  state = { //e’re leaning on the Babel plugin transform-class-properties to help simplify how we define our initial state.
+  state = { //we’re leaning on the Babel plugin transform-class-properties to help simplify how we define our initial state.
     timers: [
       {
         title: 'Mow the lawn',
@@ -31,6 +32,14 @@ export default class App extends React.Component {
     ],
   };
 
+  handleCreateFormSubmit = timer => {
+    const { timers } = this.state;
+
+    this.setState({
+      timers: [newTimer(timer), ...timers], //notice we set this.state.timers to a new array of timers. the first element is array is the new timer, while the second element (w/ spread syntax) adds the already existing timers to the new array. We do this to avoid mutating state. We do not want to use push() here, as that would mutate state. remember, we never want to mutate state outside of this.setState({}). as a general rule, never use push() on state, because push modifies existing array, while spread operator copies and modifies original.
+    });
+  };
+
   render() {
     const { timers } = this.state
 
@@ -42,7 +51,9 @@ export default class App extends React.Component {
           </Text>
         </View>
         <ScrollView style={styles.timerList}>
-          <ToggleTimerForm />
+          <ToggleTimerForm
+            onFormSubmit={this.handleCreateFormSubmit}
+          />
           {timers.map(({ title, project, id, elapsed, isRunning }) => ( //will call once per item in the array.
             <EditableTimer
               key={id}

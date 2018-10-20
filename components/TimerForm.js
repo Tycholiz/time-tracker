@@ -8,54 +8,92 @@ import {
 
 import TimerButton from './TimerButton';
 
-export default function TimerForm({ id, title, project}) {
-	const submitText = id ? 'Update' : 'Create';
+export default class TimerForm extends React.Component {
+	constructor(props) { //because we’re checking and defining our state based on props, we’re using the constructor() for state initialization instead of defining state as a class property.
+		super(props);
+		const { id, title, project } = props;
 
-	return (
-		<View style={styles.formContainer}>
+		this.state = {
+			title: id ? title : '',
+			project: id ? project : '',
+		};
+	}
 
-			<View style={styles.attributeContainer}>
-				<Text style={styles.textInputTitle}>
-					Title
-				</Text>
-				<View style={styles.textInputContainer}>
-					<TextInput
-						style={styles.textInput}
-						underlineColorAndroid='transparent'
-						defaultValue={title} //we add this line because when the form is used for editing, we want the existing title to prepopulate the textfield
+	handleTitleChange = title => {
+		this.setState({ title })
+	};
+
+	handleProjectChange = project => {
+		this.setState({ project })
+	};
+
+	handleSubmit = () => {
+		const { onFormSubmit, id } = this.props;
+		const { title, project } = this.state;
+
+		onFormSubmit({
+			id,
+			title,
+			project,
+		});
+	};
+
+	render() {
+		const { id, onFormClose } = this.props; //Notice that we’re reading id via props and reading title and project from state. This is because we want to supply the function with the up - to - date values of title and project(in state) as opposed to the initial values(supplied as props). const { title, project } = this.state;
+
+		const submitText = id ? 'Update' : 'Create';
+
+		return (
+			<View style={styles.formContainer}>
+
+				<View style={styles.attributeContainer}>
+					<Text style={styles.textInputTitle}>
+						Title
+					</Text>
+					<View style={styles.textInputContainer}>
+						<TextInput
+							style={styles.textInput}
+							underlineColorAndroid='transparent'
+							// value={title} //we add this line because when the form is used for editing, we want the existing title to prepopulate the textfield
+							onChangeText={this.handleTitleChange}
+						/>
+					</View>
+				</View>
+
+				<View style={styles.attributeContainer}>
+					<Text style={styles.textInputTitle}>
+						Project
+					</Text>
+					<View style={styles.textInputContainer}>
+						<TextInput
+							style={styles.textInput}
+							underlineColorAndroid='transparent'
+							// value={project}
+							onChangeText={this.handleProjectChange}
+						/>
+					</View>
+				</View>
+
+				<View style={styles.buttonGroup}>
+					<TimerButton
+						small
+						color='#21BA45'
+						title={submitText}
+						onPress={this.handleSubmit}
+					/>
+					<TimerButton
+						small
+						color='#Db2828'
+						title='Cancel'
+						onPress={onFormClose}
 					/>
 				</View>
-			</View>
 
-			<View style={styles.attributeContainer}>
-				<Text style={styles.textInputTitle}>
-					Project
-				</Text>
-				<View style={styles.textInputContainer}>
-					<TextInput
-						style={styles.textInput}
-						underlineColorAndroid='transparent'
-						defaultValue={project}
-					/>
-				</View>
 			</View>
-
-			<View style={styles.buttonGroup}>
-				<TimerButton
-					small
-					color='#21BA45'
-					title={submitText}
-				/>
-				<TimerButton
-					small
-					color='#Db2828'
-					title='Cancel'
-				/>
-			</View>
-
-		</View>
-	);
+		);
+	}
 }
+
 
 const styles = StyleSheet.create({
 	formContainer: {
