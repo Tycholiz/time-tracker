@@ -40,6 +40,32 @@ export default class App extends React.Component {
     });
   };
 
+  handleFormSubmit = attrs => {
+    const { timers } = this.state;
+
+    this.setState({ //Note that we call map() on timers from within the JavaScript object we’re passing to setState() . This is an often used pattern.The call is evaluated and then the property timers is set to the result. Inside of the map() function we check if the timer matches the one being updated by comparing their id attributes.If not, we just return the timer .Otherwise, we use the spread operator again to return a new object with the timer’s updated attributes.
+      timers: timers.map(timer => {
+        if (timer.id === attrs.id) {
+          const { title, project } = attrs;
+
+          return {
+            ...timer,
+            title,
+            project,
+          };
+        }
+        return timer;
+      }),
+    });
+  };
+
+  handleRemovePress = timerId => {
+    console.log("id to delete", timerId)
+    this.setState({
+      timers: this.state.timers.filter(timer => timer.id !== timerId)
+    });
+  };
+
   render() {
     const { timers } = this.state
 
@@ -54,13 +80,16 @@ export default class App extends React.Component {
           <ToggleTimerForm
             onFormSubmit={this.handleCreateFormSubmit}
           />
-          {timers.map(({ title, project, id, elapsed, isRunning }) => ( //will call once per item in the array.
+          {timers.map(({ id, title, project, elapsed, isRunning }) => ( //will call once per item in the array (therefore, twice)
             <EditableTimer
-              key={id}
+              key={id} //passing down the key prop, with
+              id={id}
               title={title}
               project={project}
               elapsed={elapsed}
               isRunning={isRunning} //specify if timer is running
+              onFormSubmit={this.handleFormSubmit}
+              onRemovePress={this.handleRemovePress}
             />
           ))}
         </ScrollView>

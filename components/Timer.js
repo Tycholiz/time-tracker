@@ -11,6 +11,12 @@ import {
 import TimerButton from './TimerButton';
 
 export default class Timer extends React.Component {
+	handleRemovePress = () => {
+		// const { id, onRemovePress } = this.props;
+		this.props.onRemovePress(this.props.id); //when this line gets executed, onRemovePress bubbles up to App.js, which causes handleRemovePress in App.js to trigger
+		console.log("from Timer.js")
+	};
+
 	render() {
 		const { title, project, elapsed } = this.props;
 		const elapsedString = renderElapsedString(elapsed);
@@ -26,8 +32,17 @@ export default class Timer extends React.Component {
 					{elapsedString} hours
 			</Text>
 				<View style={styles.buttonGroup}>
-					<TimerButton color="blue" small title="Edit" />
-					<TimerButton color="blue" small title="Remove" />
+					<TimerButton
+						color="blue"
+						small
+						title="Edit"
+					/>
+					<TimerButton
+						color="blue"
+						small
+						title="Remove"
+						onPress={this.handleRemovePress}
+					/>
 				</View>
 				<TimerButton color="#21BA45" title="Start" />
 			</View>
