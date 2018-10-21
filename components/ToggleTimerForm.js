@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import {
 	StyleSheet,
@@ -9,6 +11,10 @@ import TimerForm from './TimerForm';
 
 // we define this as a function instead of a class because it does not need to manage state.  we call them 'functional components'. Think of these comp's as ones that only need to implement the render() method. they don't manage state, and therefore dont need any lifecycle hooks. we use functional comp's b/c 1. it forces us to try to manage less state, reducing complexity, and 2. they are more reusable since they need to have all their configuration passed from the outside.
 export default class ToggleableTimerForm extends React.Component {
+	static propTypes = {
+		onFormSubmit: PropTypes.func.isRequired,
+	};
+
 	state = {
 		isOpen: false,
 	};

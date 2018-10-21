@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 import TimerForm from './TimerForm';
@@ -5,6 +7,18 @@ import Timer from './Timer';
 
 //these are props. we don't use 'this' when working with functional comp's
 export default class EditableTimer extends React.Component {
+	static propTypes = {
+		id: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired,
+		project: PropTypes.string.isRequired,
+		elapsed: PropTypes.number.isRequired,
+		isRunning: PropTypes.bool.isRequired,
+		onFormSubmit: PropTypes.func.isRequired,
+		onRemovePress: PropTypes.func.isRequired,
+		onStartPress: PropTypes.func.isRequired,
+		onStopPress: PropTypes.func.isRequired,
+	};
+
 	state = {
 		editFormOpen: false,
 	};

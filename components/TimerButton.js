@@ -1,13 +1,25 @@
+import PropTypes from 'prop-types';
+import ColorPropType from 'prop-types';
+
 import React from 'react';
 import {
 	StyleSheet,
-	View,
-	ScrollView,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
 } from 'react-native';
 
 export default function TimerButton({ color, title, small, onPress }) { //we include these props as params so that our button can have easier customization
+	// TimerButton.propTypes = {
+	// 	color: ColorPropType.isRequired,
+	// 	title: PropTypes.string.isRequired,
+	// 	small: PropTypes.bool,
+	// 	onPress: PropTypes.func.isRequired,
+	// };
+
+	// TimerButton.defaultProps = {
+	// 	small: false,
+	// };
+
 	return (
 		<TouchableOpacity
 			style={[

@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   Text,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import EditableTimer from './components/EditableTimer';
@@ -121,25 +122,27 @@ export default class App extends React.Component {
             Timers
           </Text>
         </View>
-        <ScrollView style={styles.timerList}>
-          <ToggleTimerForm
-            onFormSubmit={this.handleCreateFormSubmit}
-          />
-          {timers.map(({ id, title, project, elapsed, isRunning }) => ( //will call once per item in the array (therefore, twice)
-            <EditableTimer
-              key={id} //passing down the key prop, with id as its value
-              id={id}
-              title={title}
-              project={project}
-              elapsed={elapsed}
-              isRunning={isRunning} //specify if timer is running
-              onFormSubmit={this.handleFormSubmit}
-              onRemovePress={this.handleRemovePress}
-              onStartPress={this.toggleTimer}
-              onStopPress={this.toggleTimer}
+        <KeyboardAvoidingView behavior="padding" style={styles.timerListContainer}>
+          <ScrollView style={styles.timerList}>
+            <ToggleTimerForm
+              onFormSubmit={this.handleCreateFormSubmit}
             />
-          ))}
-        </ScrollView>
+            {timers.map(({ id, title, project, elapsed, isRunning }) => ( //will call once per item in the array (therefore, twice)
+              <EditableTimer
+                key={id} //passing down the key prop, with id as its value
+                id={id}
+                title={title}
+                project={project}
+                elapsed={elapsed}
+                isRunning={isRunning} //specify if timer is running
+                onFormSubmit={this.handleFormSubmit}
+                onRemovePress={this.handleRemovePress}
+                onStartPress={this.toggleTimer}
+                onStopPress={this.toggleTimer}
+              />
+            ))}
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -147,6 +150,9 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   appContainer: {
+    flex: 1,
+  },
+  timerListContainer: {
     flex: 1,
   },
   titleContainer: {

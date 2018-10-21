@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import {
 	StyleSheet,
@@ -9,6 +11,20 @@ import {
 import TimerButton from './TimerButton';
 
 export default class TimerForm extends React.Component {
+	static propTypes = {
+		id: PropTypes.string,
+		title: PropTypes.string,
+		project: PropTypes.string,
+		onFormSubmit: PropTypes.func.isRequired,
+		onFormClose: PropTypes.func.isRequired,
+	};
+
+	static defaultProps = {
+		id: null,
+		title: '',
+		project: '',
+	};
+
 	constructor(props) { //because we’re checking and defining our state based on props, we’re using the constructor() for state initialization instead of defining state as a class property.
 		super(props);
 		const { id, title, project } = props;
