@@ -59,12 +59,57 @@ export default class App extends React.Component {
     });
   };
 
+  toggleTimer = timerId => {
+    this.setState(prevState => {
+      const { timers } = prevState;
+      return {
+        timers: timers.map(timer => {  //When toggleTimer comes across the relevant timer within its map call, it sets the property isRunning to the opposite of its value.This means it will stop a running timer and start a stopped timer.
+          const { id, isRunning } = timer;
+
+          if (id === timerId) {
+            return {
+              ...timer,
+              isRunning: !isRunning,
+            };
+          }
+          return timer;
+        }),
+      };
+    });
+  };
+
   handleRemovePress = timerId => {
     console.log("id to delete", timerId)
     this.setState({
       timers: this.state.timers.filter(timer => timer.id !== timerId)
     });
   };
+
+  componentDidMount() {
+    const TIME_INTERVAL = 1000;
+    this.intervalId = setInterval(() => {
+      const { timers } = this.state;
+      this.setState({
+        timers: timers.map(timer => {
+          const { elapsed, isRunning } = timer;
+          return {
+            ...timer,
+            elapsed: isRunning ? elapsed + TIME_INTERVAL : elapsed, //the way this is written means, keep timer the way it is (...timer), while the second line says "replace 'elapsed' with the following value"
+          };
+        }),
+      });
+    }, TIME_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId)
+  }
+
+// Using setInterval() when a component mounts and clearInterval() when a component un-
+// mounts is a common pattern in React apps that require interval events.
+// In our version of the app, App will never be unmounted.However, it is still best practice
+// to clear any intervals when a component unmounts.
+
 
   render() {
     const { timers } = this.state
@@ -82,7 +127,7 @@ export default class App extends React.Component {
           />
           {timers.map(({ id, title, project, elapsed, isRunning }) => ( //will call once per item in the array (therefore, twice)
             <EditableTimer
-              key={id} //passing down the key prop, with
+              key={id} //passing down the key prop, with id as its value
               id={id}
               title={title}
               project={project}
@@ -90,6 +135,8 @@ export default class App extends React.Component {
               isRunning={isRunning} //specify if timer is running
               onFormSubmit={this.handleFormSubmit}
               onRemovePress={this.handleRemovePress}
+              onStartPress={this.toggleTimer}
+              onStopPress={this.toggleTimer}
             />
           ))}
         </ScrollView>

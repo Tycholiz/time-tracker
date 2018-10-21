@@ -14,11 +14,42 @@ export default class Timer extends React.Component {
 	handleRemovePress = () => {
 		// const { id, onRemovePress } = this.props;
 		this.props.onRemovePress(this.props.id); //when this line gets executed, onRemovePress bubbles up to App.js, which causes handleRemovePress in App.js to trigger
-		console.log("from Timer.js")
 	};
 
+	handleStartPress = () => {
+		const { id, onStartPress } = this.props;
+		onStartPress(id);
+	};
+
+	handleStopPress = () => {
+		const { id, onStopPress } = this.props;
+		onStopPress(id);
+	}
+
+	renderActionButton() {
+		const { isRunning } = this.props;
+
+		if (isRunning) {
+			return (
+				<TimerButton
+					color="tomato"
+					title="Stop"
+					onPress={this.handleStopPress}
+				/>
+			)
+		} else {
+			return (
+				<TimerButton
+					color="#21BA45"
+					title="Start"
+					onPress={this.handleStartPress}
+				/>
+			)
+		}
+	}
+
 	render() {
-		const { title, project, elapsed } = this.props;
+		const { title, project, elapsed, onEditPress } = this.props;
 		const elapsedString = renderElapsedString(elapsed);
 		return (
 			<View style={styles.timerContainer}>
@@ -36,6 +67,7 @@ export default class Timer extends React.Component {
 						color="blue"
 						small
 						title="Edit"
+						onPress={onEditPress}
 					/>
 					<TimerButton
 						color="blue"
@@ -44,7 +76,7 @@ export default class Timer extends React.Component {
 						onPress={this.handleRemovePress}
 					/>
 				</View>
-				<TimerButton color="#21BA45" title="Start" />
+				{this.renderActionButton()}
 			</View>
 		);
 	}
